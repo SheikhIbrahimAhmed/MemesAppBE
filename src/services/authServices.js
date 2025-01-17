@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-
+const Meme = require("../models/memeModel");
 const createUserServ = async (obj) => {
     try {
         return await User.create(obj);
@@ -7,9 +7,9 @@ const createUserServ = async (obj) => {
         console.log("err", err);
     }
 }
-const createPostServ = async (obj) => {
+const createMemeServ = async (obj) => {
     try {
-        return await Post.create(obj);
+        return await Meme.create(obj);
     } catch (err) {
         console.log("err", err);
     }
@@ -25,5 +25,5 @@ const findSingleUserServ = async (obj) => {
 module.exports = {
     createUserServ,
     findSingleUserServ,
-    createPostServ
+    createMemeServ
 }
