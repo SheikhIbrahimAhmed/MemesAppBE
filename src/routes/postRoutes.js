@@ -1,6 +1,5 @@
 const express = require('express');
 const { getMemes, createMeme } = require('../controllers/postController');
-
 const loginMiddleware = require('../middlewares/loginMiddleware');
 const router = express.Router();
 
