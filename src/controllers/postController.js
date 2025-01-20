@@ -31,13 +31,19 @@ const createMeme = async (req, res) => {
 
 const getMemes = async (req, res) => {
     try {
-        const { userId, tags } = req.query;
-        const memes = await getAllMemes(userId, tags, skip = 0, limit = 10);
-        res.status(200).json(memes);
+        const { tags, skip, limit = 9 } = req.query;
+        const { memes, totalRecords, totalPages } = await getAllMemes(tags, skip, parseInt(limit));
+        res.status(200).json({
+            memes,
+            totalRecords,
+            totalPages,
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching memes' });
+        console.log("error", error)
+        res.status(500).json({ message: 'Error fetching memesss' });
     }
 };
+
 
 
 
