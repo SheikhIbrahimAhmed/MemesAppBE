@@ -4,7 +4,6 @@ const app = express();
 const http = require('http').Server(app);
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const authRouter = require('./src/routes/authRoutes');
 const postRouter = require('./src/routes/postRoutes');
 const uploadRouter = require('./src/routes/uploadRoutes');
 const { connectMongoDB } = require('./connection');

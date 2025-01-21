@@ -1,31 +1,29 @@
-const { createMemeServ } = require("../services/authServices");
-const { getAllMemes } = require('../services/postServices');
+const { getAllMemes, createMemeServ } = require("../services/postServices");
 
 const createMeme = async (req, res) => {
     try {
 
-        const { userId, tags, image } = req.body;
+        const { tags, image } = req.body;
         if (!tags || tags.length === 0) {
             return res.status(400).json({ message: 'No tags selected.' });
         }
-        if (!userId || !image) {
-            return res.status(400).json({ message: 'userID, caption and are required.' });
+        if (!image) {
+            return res.status(400).json({ message: 'Image is Required.' });
         }
         const newPost = await createMemeServ({
-            userId: userId,
             tags: tags,
             image
 
         })
 
         res.status(201).json({
-            message: 'Post created successfully!',
+            message: 'Meme posted successfully!',
             post: newPost,
         });
 
     } catch (error) {
-        console.error('Error Posting post:', error);
-        res.status(500).json({ message: 'Error Posting post.', error: error.message });
+        console.error('Error Posting meme:', error);
+        res.status(500).json({ message: 'Error Posting meme.', error: error.message });
     }
 }
 

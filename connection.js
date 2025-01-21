@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectMongoDB = (http, port) => {
 
-    // const mongoString = "mongodb://localhost:27017/MemesApp"
+
     const mongoString = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}/memedb?retryWrites=true&w=majority`;
     mongoose.connect(mongoString)
         .then(() => {

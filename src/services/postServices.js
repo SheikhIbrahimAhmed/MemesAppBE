@@ -3,6 +3,13 @@ const Meme = require('../models/memeModel');
 
 
 
+const createMemeServ = async (obj) => {
+    try {
+        return await Meme.create(obj);
+    } catch (err) {
+        console.log("err", err);
+    }
+}
 
 
 const getAllMemes = async (tags, skip, limit) => {
@@ -58,5 +65,6 @@ const getAllMemes = async (tags, skip, limit) => {
 
 
 module.exports = {
-    getAllMemes
+    getAllMemes,
+    createMemeServ
 };
