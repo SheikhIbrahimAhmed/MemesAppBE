@@ -6,10 +6,9 @@ const Meme = require('../models/memeModel');
 
 
 const getAllMemes = async (tags, skip, limit) => {
-    console.log("skip in getAllMemes", skip)
+    console.log("skip in getAllMemes", skip);
     skip = Number(skip);
     try {
-
         const tagsMemes = {
             $match: {
                 tags: {
@@ -21,8 +20,8 @@ const getAllMemes = async (tags, skip, limit) => {
             },
         };
 
-
         let aggregationPipeline = [
+            { $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
             { $skip: skip },
             { $limit: limit },
         ];
@@ -30,7 +29,7 @@ const getAllMemes = async (tags, skip, limit) => {
         if (tags) {
             aggregationPipeline.unshift(tagsMemes);
         }
-        console.log("aggregationPipeline", aggregationPipeline)
+        console.log("aggregationPipeline", aggregationPipeline);
         const memes = await Meme.aggregate(aggregationPipeline);
 
         const countPipeline = tags ? [tagsMemes, { $count: "total" }] : [{ $count: "total" }];
@@ -39,9 +38,8 @@ const getAllMemes = async (tags, skip, limit) => {
         const totalRecords = countResult.length > 0 ? countResult[0].total : 0;
         const totalPages = Math.ceil(totalRecords / limit);
 
-        // console.log("memes", memes)
-        console.log("totalRecords", totalRecords)
-        console.log("total pages", totalPages)
+        console.log("totalRecords", totalRecords);
+        console.log("total pages", totalPages);
         return {
             memes,
             totalRecords,
@@ -52,6 +50,7 @@ const getAllMemes = async (tags, skip, limit) => {
         throw new Error("Error fetching memes");
     }
 };
+
 
 
 
