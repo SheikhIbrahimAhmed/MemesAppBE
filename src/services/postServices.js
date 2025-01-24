@@ -13,22 +13,35 @@ const createMemeServ = async (obj) => {
 
 
 const getAllMemes = async (tags, skip, limit) => {
-    console.log("skip in getAllMemes", skip);
+
+    const searchTags = tags.split(",").map(tag => {
+        if (tag) {
+            return tag.trim()
+        }
+    });
+
+    console.log("searched tags:", searchTags)
     skip = Number(skip);
     try {
+
+        //     $match: {
+        //         tags: {
+        //             $elemMatch: {
+        //                 $regex: tags,
+        //                 $options: "i",
+        //             },
+        //         },
+        //     },
+        // };
         const tagsMemes = {
             $match: {
-                tags: {
-                    $elemMatch: {
-                        $regex: tags,
-                        $options: "i",
-                    },
-                },
+                $or: searchTags.map(tag => ({
+                    tags: { $elemMatch: { $regex: tag, $options: "i" } },
+                })),
             },
         };
-
         let aggregationPipeline = [
-            { $sort: { createdAt: -1 } }, // Sort by createdAt in descending order
+            { $sort: { createdAt: -1 } },
             { $skip: skip },
             { $limit: limit },
         ];
@@ -45,8 +58,7 @@ const getAllMemes = async (tags, skip, limit) => {
         const totalRecords = countResult.length > 0 ? countResult[0].total : 0;
         const totalPages = Math.ceil(totalRecords / limit);
 
-        console.log("totalRecords", totalRecords);
-        console.log("total pages", totalPages);
+
         return {
             memes,
             totalRecords,

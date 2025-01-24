@@ -19,4 +19,4 @@ app.use('/api/post', postRouter);
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => { res.send("Express on Vercel"); });
 connectMongoDB(http, 5000);
-module.exports = app
+// module.exports = app
