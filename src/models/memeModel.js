@@ -11,6 +11,11 @@ const memeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        enum: ['Funny', 'Work', 'Motivational', 'Relatable', 'Sarcastic', 'Wholesome'],
+        required: true,
+    },
 }, { timestamps: true });
 
 const Meme = mongoose.model('Meme', memeSchema);

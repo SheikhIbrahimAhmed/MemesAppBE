@@ -3,7 +3,8 @@ const { getAllMemes, createMemeServ } = require("../services/postServices");
 const createMeme = async (req, res) => {
     try {
 
-        const { tags, image } = req.body;
+        const { tags, category, image } = req.body;
+        console.log("catinbackend", category)
         if (!tags || tags.length === 0) {
             return res.status(400).json({ message: 'No tags selected.' });
         }
@@ -12,6 +13,7 @@ const createMeme = async (req, res) => {
         }
         const newPost = await createMemeServ({
             tags: tags,
+            category: category,
             image
 
         })
@@ -29,8 +31,9 @@ const createMeme = async (req, res) => {
 
 const getMemes = async (req, res) => {
     try {
-        const { tags, skip, limit = 9 } = req.query;
-        const { memes, totalRecords, totalPages } = await getAllMemes(tags, skip, parseInt(limit));
+        const { tags, skip, limit = 9, category } = req.query;
+        console.log("category recieved in the backend", category)
+        const { memes, totalRecords, totalPages } = await getAllMemes(tags, skip, parseInt(limit), category);
         res.status(200).json({
             memes,
             totalRecords,
