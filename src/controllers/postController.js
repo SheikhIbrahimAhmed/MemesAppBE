@@ -1,10 +1,9 @@
-const { getAllMemes, createMemeServ } = require("../services/postServices");
-
+const { getAllMemes, createMemeServ, getAllCategories } = require("../services/postServices");
+const Category = require('../models/categoryModel');
 const createMeme = async (req, res) => {
     try {
 
-        const { tags, category, image } = req.body;
-        console.log("catinbackend", category)
+        const { tags, categoryId, image } = req.body;
         if (!tags || tags.length === 0) {
             return res.status(400).json({ message: 'No tags selected.' });
         }
@@ -13,7 +12,7 @@ const createMeme = async (req, res) => {
         }
         const newPost = await createMemeServ({
             tags: tags,
-            category: category,
+            categoryId: categoryId,
             image
 
         })
@@ -32,7 +31,7 @@ const createMeme = async (req, res) => {
 const getMemes = async (req, res) => {
     try {
         const { tags, skip, limit = 9, category } = req.query;
-        console.log("category recieved in the backend", category)
+        console.log("category in controller", category)
         const { memes, totalRecords, totalPages } = await getAllMemes(tags, skip, parseInt(limit), category);
         res.status(200).json({
             memes,
@@ -45,6 +44,18 @@ const getMemes = async (req, res) => {
     }
 };
 
+const getCategories = async (req, res) => {
+    try {
+        const categories = await getAllCategories();
+        console.log("cats", categories)
+        res.status(200).json(
+            categories
+        );
+    } catch (error) {
+        console.log("error", error)
+        res.status(500).json({ message: 'Error fetching categories' });
+    }
+};
 
 
 
@@ -72,6 +83,7 @@ const getSearchedMemes = async (req, res) => {
 module.exports = {
     createMeme,
     getMemes,
-    getSearchedMemes
+    getSearchedMemes,
+    getCategories
 };
 
